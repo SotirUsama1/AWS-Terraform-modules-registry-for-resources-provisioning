@@ -10,6 +10,10 @@ variable "aws_profile" {
   default     = "default"
 }
 
+locals {
+  aws_account_id = data.aws_caller_identity.current.account_id
+}
+
 #########################
 ### Context Variables ###
 #########################
@@ -40,6 +44,7 @@ variable "env_name" {
 
 locals {
   context = {
+    aws_account_id = local.aws_account_id
     owner   = var.owner_name
     org     = var.org_name
     project = var.project_name
@@ -53,20 +58,38 @@ locals {
 ### S3 Variables ###
 ####################
 
-variable "bucket_name" {
+variable "s3_bucket_name" {
   description = "The name of the S3 bucket"
   type        = string
   default     = ""
 }
 
-variable "bucket_name_suffix" {
+variable "s3_bucket_name_suffix" {
   description = "The suffix to append to the S3 bucket name"
   type        = string
   default     = "bucket"
 }
 
-variable "bucket_tags" {
+variable "s3_bucket_tags" {
   description = "A map of tags to assign to the S3 bucket"
+  type        = map(string)
+  default     = {}
+}
+
+variable "s3_force_destroy" {
+  description = "Whether to force destroy the S3 bucket"
+  type        = bool
+  default     = false
+}
+
+variable "s3_versioning" {
+  description = "Whether to enable versioning for the S3 bucket"
+  type        = bool
+  default     = false
+}
+
+variable "s3_versioning_configuration" {
+  description = "The versioning configuration for the S3 bucket"
   type        = map(string)
   default     = {}
 }
