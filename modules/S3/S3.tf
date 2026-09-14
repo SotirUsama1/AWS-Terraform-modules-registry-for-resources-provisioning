@@ -1,11 +1,11 @@
 resource "aws_s3_bucket" "example" {
-  bucket = var.bucket_name == "" ? format("%s-%s", var.context.prefix, var.bucket_name_suffix) : var.bucket_name
+  bucket = var.bucket_name == "" ? format("%s-%s", var.context.namespace, var.bucket_name_suffix) : var.bucket_name
 
   force_destroy = var.force_destroy
 
   tags = merge(
     {
-      Name  = var.bucket_name == "" ? format("%s-%s", var.context.prefix, var.bucket_name_suffix) : var.bucket_name
+      Name  = var.bucket_name == "" ? format("%s-%s", var.context.namespace, var.bucket_name_suffix) : var.bucket_name
     },
     var.bucket_tags
   )
