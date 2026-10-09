@@ -1,0 +1,19 @@
+name: Deploy Image
+
+on: 
+  push:
+    branches:
+      - temp
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Log in to registry
+        run: echo "${{ secrets.GHCR_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+      - name: Build and push Docker image
+        run: docker build -t ghcr.io/SotirUsama1/test:lateset .
